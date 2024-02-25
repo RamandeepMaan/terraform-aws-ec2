@@ -21,8 +21,7 @@ tool name: '', type: 'terraform'
                        terraform apply --auto-approve
                     '''
             }
-        
+                }
         }
-        
-
-
+}
+}
