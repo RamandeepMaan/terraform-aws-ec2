@@ -1,87 +1,47 @@
-variable "vm_type" {
-    default = "t2.micro"
- 
+locals {
+my_region = "ap-south-1"
+my_cidr = [ "192.168.10.0/24" ,"192.168.11.0/24" ,"172.16.5.0/24"] // vpc with list
+my_tags = { Name = "your_vpc"}
 }
-variable "ami_id" {
-    default = null // If you don't want to pass the value otherwise it would give error while passing module
+
+resource "aws_vpc" "main"{
+cidr_block = local.my_cidr[2]
+tags = local.my_tags
+
+}
+
+resource "aws_vpc" "this" {
+  cidr_block = local.my_cidr[1]
+  tags = local.my_tags
+}
+resource "aws_vpc" "this1" {
+  cidr_block = local.my_cidr[0]
+  tags = local.my_tags
+}
+
+
+/* locals {
   
-}
-
-variable "ec2_subnet" {
-    default = null
-  
-}
-
-variable "key_name" {
-
-  default = "aws"
-  
-}
-
-variable "public_key" {
-  default = null
-  
-}
-
-variable "user_data" {
-  default = null
-  
-}
-
-variable "ec2_az" {
-  default = null
-  
-}
-
-variable "vpc_id" {
-default = null
-
+  my_region = "ap-south-1"
+  vpc1={
+    my_cidr="192.168.10.0/24"
+    
   }
-variable "map_ports" {
-  default = {
-  ssh = {
-      from_port = 22
-      protocol = "tcp"
-      cidr_block = ["0.0.0.0/0"]
-    }
-}
-}
-// Resource creation block
-resource "random_string" "this" {
-special = false
-length = 6
-lower = true
-upper = false
-  
-}
-
-resource "aws_key_pair" "this" {
-  key_name   = "${var.key_name}-${random_string.this.result}"
-   public_key = var.public_key
+  vpc2={
+    my_cidr="192.168.11.0/24"
   }
   
-resource "aws_security_group" "this" {
-  name = "${var.key_name}-${random_string.this.result}"
-  vpc_id = var.vpc_id
-  dynamic "ingress" {
-    for_each = var.map_ports // Passing Values with Map
-    content {
-    from_port        = ingress.value.from_port
-    to_port          = ingress.value.from_port
-    protocol         = ingress.value.protocol
-    cidr_blocks      = ingress.value.cidr_block
-    }
-}
-}
-resource "aws_instance" "main" {
-  ami = var.ami_id
-  instance_type = var.vm_type
-  availability_zone = var.ec2_az
-  //security_groups = [aws_security_group.main.id]
-  vpc_security_group_ids = [aws_security_group.this.id] 
-  user_data = var.user_data
-  key_name = aws_key_pair.this.key_name
-  subnet_id = var.ec2_subnet
-  tags = { Name = "myvm" , owner = "raman" }
-  }
+  tags = { Name = "your_vpc"}
   
+}
+
+resource "aws_vpc" "main" {
+  cidr_block = local.vpc1.my_cidr
+  tags = local.tags
+}
+
+resource "aws_vpc" "this" {
+  cidr_block = local.vpc2.my_cidr
+  tags = local.tags
+}
+ */
