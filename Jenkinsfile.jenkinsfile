@@ -1,18 +1,24 @@
+
 pipeline {
+    agent any
 
-   environment {
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '1975', url: 'https://github.com/RamandeepMaan/terraform-aws-ec2.git']])
 
-       AWS_ACCESS_KEY_ID    = credentials('AWS_ACCESS_KEY_ID')
-
-       AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-
-   }
-
-   agent any
-
-   tools {
-
-      terraform 'terraform'
-
-   }
+            }
+        }
+        stage('Terraform init') {
+            steps {
+                sh 'terraform init'
+            }
+        }
+        stage('Terraform apply') {
+            steps {
+                sh 'terraform apply --auto-approve'
+            }
+        }
+        
+    }
 }
