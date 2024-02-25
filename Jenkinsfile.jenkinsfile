@@ -13,7 +13,8 @@ tool name: '', type: 'terraform'
 
             }
         }
-        stage('Terraform init') {
+        stage { 
+           ('Terraform init') 
             steps {
                 bat '''terraform init
                        terraform plan
@@ -24,4 +25,4 @@ tool name: '', type: 'terraform'
         }
         
     }
-}
+
