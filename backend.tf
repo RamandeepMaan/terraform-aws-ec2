@@ -1,5 +1,5 @@
 backend "s3" {
-    bucket         	   = "dhuri"
+    bucket         	   = "dhuri/tfstate"
     key              	   = "terraform.tfstate"
     region         	   = "ap-south-1"
     
