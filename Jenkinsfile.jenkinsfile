@@ -16,10 +16,10 @@ tool name: '', type: 'terraform'
         stage { 
            ('Terraform init') 
             steps {
-                bat '''terraform init
-                       terraform plan
-                       terraform apply --auto-approve
-                    '''
+                sh ('terraform init')
+                 sh ('terraform plan')
+                 sh ('terraform apply --auto-approve')
+                    
             }
                 }
         }
